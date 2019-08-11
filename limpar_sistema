@@ -1,0 +1,185 @@
+#!/bin/bash
+# Script escrito por Douglas Tofoli
+
+Menu(){
+    clear
+	echo "------------------------------------------------------------"
+	echo "# Limpar Sistema (Arch Linux)"
+	echo "# Script '$0' | PID '$$'"
+	echo "------------------------------------------------------------"
+	echo
+	echo '1. Limpar cache do Pacman'
+	echo '2. Limpar todo o cache do Pacman'
+	echo '3. Listar pacotes orfãos'
+	echo '4. Limpar pacotes orfãos'
+	echo '5. Limpar /tmp/'
+	echo '6. Remover programa'
+	echo '7. Gerar lista de pacotes instalados'
+    echo '8. Sair'
+	echo
+	read -p "Escolha uma ação: " opcao 
+
+	case $opcao in
+		1) limpar_cache ;;
+		2) limpar_todo_cache ;;
+		3) listar_pacotes_orfaos ;;
+		4) limpar_pacotes_orfaos ;;
+		5) limpar_tmp ;;
+		6) remover_programa ;;
+        7) backup_pacman ;;
+		8) sair ;;	
+		*) clear; echo "Opção escolhida inválida!"; echo; sleep 1.5 ; Menu ;;
+	esac
+}
+
+limpar_cache(){
+	clear
+	echo "Limpando o cache do Pacman..."
+	echo
+	echo "Se necessário confirme a ação."
+	echo
+	sudo pacman -Sc
+	echo
+	echo "Processo finalizado!"
+	echo
+	echo "Aperte ENTER para continuar."
+	read
+	Menu
+}
+
+limpar_todo_cache(){
+	clear
+	echo "Limpando todo o cache do Pacman..."
+	echo
+	echo "Se necessário confirme a ação."
+	echo
+	sudo pacman -Scc
+	echo
+	echo "Processo finalizado!"
+	echo
+	echo "Aperte ENTER para continuar."
+	read
+	Menu
+}
+
+listar_pacotes_orfaos(){
+	clear
+	echo "Listando pacotes orfãos..."
+	echo
+	echo "Se necessário confirme a ação."
+	echo
+	pacman -Qtd
+	echo
+	echo "Processo finalizado!"
+	echo
+	echo "Aperte ENTER para continuar."
+	read
+	Menu
+}
+
+limpar_pacotes_orfaos(){
+	clear
+	echo "Limpando todos os pacotes orfãos..."
+	echo
+	echo "Se necessário confirme a ação."
+	echo
+	sudo pacman -Rsn $(pacman -Qdtq)
+	echo
+	echo "Processo finalizado!"
+	echo
+	read -p "Aperte ENTER para continuar."
+	Menu
+}
+
+limpar_tmp(){
+	clear
+	echo "Limpando '/tmp/'"
+	echo
+	echo "Se necessário confirme a ação."
+	echo
+	sudo rm -rf /tmp/*
+	echo
+	echo "Processo finalizado!"
+	echo
+	read -p "Aperte ENTER para continuar."
+	Menu
+}
+
+remover_programa(){
+	clear
+	read -p "Qual gerenciador de pacotes? [(P)acman | (Y)ay]: " gerenciador_pacotes
+	read -p "Nome do pacote: " pacote
+	if [[ $gerenciador_pacotes = 'p' || $gerenciador_pacotes = 'P' ]]; then
+		sudo pacman -R $pacote
+	fi
+ 
+	if [[ $gerenciador_pacotes = 'y' || $gerenciador_pacotes = 'Y' ]]; then
+		yay -R $pacote
+	fi
+	Menu
+}
+
+condicao_remover_programa(){
+	read -p  "Qual gerenciador? [Y]ay ou [P]acman: " gerenciador
+	if [[ $gerenciador = 'P' || $gerenciador = 'p' ]]; then
+		sudo pacman -S $pacote
+	elif [[ $gerenciador = 'Y' || $gerenciador = 'y' ]]; then
+		yay -R $pacote
+	else
+		clear
+		echo "Opção inválida!"
+		sleep 1
+		condicao_remover_programa
+	fi
+    clear
+	
+	Menu
+}
+
+condicao_verificar_pacotes_orfaos(){
+	read -p "Deseja verificar os pacotes orfãos? [S / N]: " verificar
+	if [[ $verificar = 'S' || $verificar = 's' ]]; then
+		listar_pacotes_orfaos
+	elif [[ $verificar = 'N' || $verificar = 'n' ]]; then
+		sleep 1
+		Menu
+	else
+		clear
+		echo "Opção inválida!"
+		sleep 1
+		clear
+	fi
+	
+	Menu
+}
+
+backup_pacman(){
+    clear
+    pacman -Qqe > /home/$USER/pkglist.txt
+    echo "Backup feito em $(pwd)/pkglist.txt"
+    read
+    clear
+    Menu
+}
+
+sair(){
+	clear
+	read -p "Deseja sair? [S / N]: " sair
+	
+	if [[ $sair = 'S' || $sair = 's' ]]; then
+		clear
+		echo 'Saindo...'
+		sleep 1
+		clear
+		exit
+	elif [[ $sair = 'N' || $sair = 'n' ]]; then
+		Menu
+	else
+		clear
+		echo 'Valor digitado inválido!'
+		sleep 1
+		sair
+	fi
+}
+
+Menu
