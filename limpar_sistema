@@ -4,7 +4,7 @@
 Menu(){
     clear
 	echo "------------------------------------------------------------"
-	echo "# Limpar Sistema (Arch Linux)"
+	echo "# Clear system (Arch Linux)"
 	echo "# Script '$0' | PID '$$'"
 	echo "------------------------------------------------------------"
 	echo
