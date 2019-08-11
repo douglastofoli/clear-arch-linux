@@ -8,16 +8,16 @@ Menu(){
 	echo "# Script '$0' | PID '$$'"
 	echo "------------------------------------------------------------"
 	echo
-	echo '1. Limpar cache do Pacman'
-	echo '2. Limpar todo o cache do Pacman'
-	echo '3. Listar pacotes orfãos'
-	echo '4. Limpar pacotes orfãos'
-	echo '5. Limpar /tmp/'
-	echo '6. Remover programa'
-	echo '7. Gerar lista de pacotes instalados'
-    echo '8. Sair'
+	echo '1. Clear Pacman cache'
+	echo '2. Clear all Pacman cache'
+	echo '3. List orphaned packages'
+	echo '4. Remove orphaned packages'
+	echo '5. Clear /tmp/'
+	echo '6. Remove package'
+	echo '7. Generate package list'
+    echo '8. Exit'
 	echo
-	read -p "Escolha uma ação: " opcao 
+	read -p "Choose an action: " opcao 
 
 	case $opcao in
 		1) limpar_cache ;;
