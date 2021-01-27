@@ -1,4 +1,4 @@
-# Clean Arch Linux Script
+# Script to Clean up Arch Linux
 
 ## How to use
 
@@ -7,7 +7,7 @@
 chmod +x limpar_sistema
 ```
 
-**Execute:**
+**Run:**
 ```
 ./limpar_sistema
 ```
